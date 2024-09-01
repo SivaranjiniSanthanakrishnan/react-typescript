@@ -17,10 +17,10 @@ export default function Paginate(props: PaginateType) {
           </select>
         </div>
         <div className="float-right">
-          <button onClick={() => props.paginate(1)}>&lt;&lt;</button>{" "}
+          <button onClick={() => props.paginate(1)}>&lt;&lt;</button>
           <button onClick={() => props.paginate(props.currentPage - 1)}>
             &lt;
-          </button>{" "}
+          </button>
           &nbsp;
           {/* <input type="text" value={props.currentPage} style={{ width: 10 }} /> */}
           <select

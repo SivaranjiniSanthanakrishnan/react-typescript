@@ -9,9 +9,11 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Course, CourseProcess } from "./types/Course";
 import Paginate from "./Pagination";
+
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
   ...theme.typography.body2,
@@ -25,6 +27,7 @@ export default function Home() {
   const [paginationData, setPaginationData] = useState<Course[]>([]);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [itemPerPage, setItemPerPage] = useState(10);
+  const navigate = useNavigate();
 
   let endIndex = currentPage * itemPerPage;
   let startIndex = endIndex - itemPerPage;
@@ -44,6 +47,7 @@ export default function Home() {
       setPaginationData(course.slice(startIndex, endIndex));
     }
   };
+
   const setItem = (itemsPerPage: number): void => {
     setItemPerPage(itemsPerPage);
   };
@@ -62,8 +66,12 @@ export default function Home() {
   useEffect(() => {
     console.log(itemPerPage, endIndex, startIndex);
     paginate(currentPage);
+    console.log(course);
   }, [itemPerPage]);
 
+  const handleClick = (id: number) => {
+    navigate(`/manage-user/${id}`);
+  };
   return (
     <Box sx={{ flexGrow: 1 }} padding={7}>
       <Grid container spacing={2}>
@@ -108,7 +116,9 @@ export default function Home() {
                       key={row.name}
                       sx={{
                         "&:last-child td, &:last-child th": { border: 0 },
-                      }}>
+                      }}
+                      onClick={() => handleClick(row.id ? row.id : 0)}
+                      style={{ cursor: "pointer" }}>
                       <TableCell align="right">{row.id}</TableCell>
                       <TableCell component="th" scope="row">
                         {row.name}
@@ -118,8 +128,22 @@ export default function Home() {
                       <TableCell align="right">{row.email}</TableCell>
                       <TableCell align="right">{row.phone}</TableCell>
                       <TableCell align="right">{row.age}</TableCell>
-                      <TableCell align="right">{row.mixedDate}</TableCell>
+                      <TableCell align="right">{row.displayDate}</TableCell>
                     </TableRow>
+
+                    // <TableRow
+                    //   key={row.name}
+                    //   sx={{
+                    //     "&:last-child td, &:last-child th": { border: 0 },
+                    //   }}>
+                    //   <TableCell component="th" scope="row">
+                    //     {row.name}
+                    //   </TableCell>
+                    //   <TableCell align="right">{row.calories}</TableCell>
+                    //   <TableCell align="right">{row.fat}</TableCell>
+                    //   <TableCell align="right">{row.carbs}</TableCell>
+                    //   <TableCell align="right">{row.protein}</TableCell>
+                    // </TableRow>
                   ))}
                 </TableBody>
               </Table>
